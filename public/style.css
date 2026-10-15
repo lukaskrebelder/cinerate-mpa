@@ -1,0 +1,226 @@
+/* Farben und Maße als Variablen --> Wenn man hier einen Wert ändert, wird er überall
+  verändert, wo var(--varName) verwendet wird */
+
+:root {
+  --farbe-akzent: #3C9B7A;          /* Seegrün - Für Rahmen */
+  --farbe-akzent-dunkel: #2E7A5F;   /* dunkleres Grün - Buttons und Links  */
+  --farbe-mint: #BFE7D6;            /* helle Flächen */
+  --farbe-hintergrund: #F3FBF7;     /* Seitenhintergrund */
+  --farbe-sand: #E2D2B6;            /* Footer */
+  --farbe-text: #4B635C;            /* Schrift und Header */
+  --farbe-weiss: #FFFFFF;
+  --farbe-fehler: #B3412F;          /* Fehlermeldungen */
+  --radius: 10px;                     /* Rundung der Ecken */
+  --max-breite: 1100px;               /* maximale Breite des Inhalts */
+}
+
+*{
+  box-sizing: border-box;
+}
+
+/* Anpassung layout body */
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.6;
+  background: var(--farbe-hintergrund);
+  color: var(--farbe-text);
+}
+
+a {
+  color: var(--farbe-akzent-dunkel);
+}
+
+h1, h2, h3 {
+  line-height: 1.25;
+}
+
+/* Header und Navigation  */
+.kopf {
+  background: var(--farbe-text);
+  color: var(--farbe-weiss);
+}
+
+/* Logo links, Navigation rechts. 
+  flex-wrap: Auf schmalen Bildschirmen rutscht die Navigation unter das Logo, statt abgeschnitten zu werden. */
+.kopf-innen {
+  max-width: var(--max-breite);
+  margin: 0 auto;                 /* zentriert den Inhalt */
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between; /* größter Abstand zwischen Logo und Navigation */
+  gap: 0.5rem 1.5rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--farbe-weiss);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+}
+
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.navigation a {
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius);
+  color: var(--farbe-hintergrund);
+  text-decoration: none;
+}
+
+.navigation a:hover {
+  background: rgba(255, 255, 255, 0.15);  /* leicht aufgehellt beim Darüberfahren */
+}
+
+/* Der aktuell geöffnete Menüpunkt. Die Klasse "aktiv" setzt router.js. */
+.navigation a.aktiv {
+  background: var(--farbe-mint);
+  color: var(--farbe-text);
+  font-weight: 600;
+}
+
+/* Hauptbereich */
+.inhalt {
+  flex: 1;                        /* nimmt den freien Platz zwischen Header und Footer */
+  width: 100%;
+  max-width: var(--max-breite);
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.hero {
+  background: var(--farbe-mint);
+  border-radius: var(--radius);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+
+.hero h1 {
+  margin-top: 0;
+}
+
+/* Buttons */
+/* Gilt für <a class="button"> und <button class="button"> */
+.button {
+  display: inline-block;
+  padding: 0.65rem 1.4rem;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--farbe-akzent-dunkel);
+  color: var(--farbe-weiss);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--farbe-text);
+}
+
+/* Formulare für Anmeldung und Registrierung */
+.formular {
+  max-width: 420px;
+  margin: 0 auto;
+  background: var(--farbe-weiss);
+  border: 1px solid var(--farbe-mint);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.formular label {
+  display: block;
+  margin: 1rem 0 0.25rem;
+  font-weight: 600;
+}
+
+.formular input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--farbe-akzent);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  color: var(--farbe-text);
+}
+
+/* Fehlermeldungen */
+.fehler {
+  margin: 1rem 0 0;
+  padding: 0.6rem 0.75rem;
+  border-left: 4px solid var(--farbe-fehler);
+  background: #FBEDEA;
+  color: var(--farbe-fehler);
+}
+
+/* Sichtbarer Rahmen, wenn man per Tastatur, also mit TAB zu einem Element springt.
+   :focus-visible greift nur bei Tastaturbedienung, nicht bei Mausklicks. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--farbe-akzent);
+  outline-offset: 2px;
+}
+
+/* Footer */
+.fuss {
+  background: var(--farbe-sand);
+  color: var(--farbe-text);
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.fuss p {
+  margin: 0.2rem 0;
+}
+
+/* Kleine Bildschirme bis 640 px Breite --> bspw. Handys) */
+@media (max-width: 640px) {
+  .kopf-innen {
+    justify-content: center;   /* Logo und Navigation mittig statt links/rechts */
+  }
+
+  .hero {
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* Layout und Style für das Registrierungsformular */
+/* Button über die ganze Breite des Formulars */
+.formular .button {
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+.formular .button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Bestätigung nach erfolgreicher Registrierung */
+.erfolg {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: var(--farbe-mint);
+  border-radius: var(--radius);
+  text-align: center;
+}
+
+
+/* Hinweis unter dem Formular, z. B. "Noch kein Konto?" */
+.formular-hinweis {
+  margin: 1.25rem 0 0;
+  text-align: center;
+  font-size: 0.95rem;
+}
