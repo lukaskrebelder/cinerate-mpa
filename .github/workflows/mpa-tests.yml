@@ -1,0 +1,50 @@
+# Automatische Tests für die MPA mit GitHub Actions.
+# GitHub führt diese Schritte selbst auf einem Rechner in der Cloud aus
+# und zeigt am Ende an, ob alle Tests bestanden haben (grüner Haken) oder nicht (rotes Kreuz).
+
+# Name, der auf GitHub im Reiter "Actions" und in der Pull-Request-Übersicht erscheint
+name: MPA tests
+
+# Wann soll der Ablauf starten?
+on:
+  # bei jedem Push auf den Branch "main" (also nach jedem Merge)
+  push:
+    branches:
+      - main
+  # bei jedem Pull Request, der in "main" gemergt werden soll
+  # (so wird ein Branch schon vor dem Merge geprüft)
+  pull_request:
+    branches:
+      - main
+  # zusätzlich von Hand startbar: GitHub -> Reiter "Actions" -> "Run workflow"
+  workflow_dispatch:
+
+# Was soll ausgeführt werden? Ein "job" ist eine Gruppe von Schritten.
+jobs:
+  test:
+    # Auf welchem Betriebssystem läuft der Job? (Linux-Rechner von GitHub)
+    runs-on: ubuntu-24.04
+
+    # Die Schritte laufen nacheinander. Schlägt einer fehl, bricht der Job ab.
+    steps:
+      # 1. Den Code aus dem Repository auf den Rechner holen
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      # 2. Node.js installieren (gleiche Version wie bei uns lokal).
+      #    cache: npm merkt sich die heruntergeladenen Pakete für schnellere Läufe.
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      # 3. Die Abhängigkeiten installieren. "npm ci" nutzt genau die Versionen
+      #    aus package-lock.json und ist für automatische Läufe besser als "npm install".
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Die Tests ausführen (entspricht "npm test" bei uns lokal).
+      #    Bei einem fehlgeschlagenen Test wird der Lauf rot.
+      - name: Run tests
+        run: npm test
