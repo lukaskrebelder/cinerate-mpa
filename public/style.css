@@ -224,3 +224,28 @@ input:focus-visible {
   text-align: center;
   font-size: 0.95rem;
 }
+
+/* Abmelden im Menü ist ein Formular mit Button (es ändert etwas auf dem Server),
+   sieht jedoch aus wie die Links daneben */
+.menue-form {
+  margin: 0;
+}
+
+.menue-knopf {
+  padding: 0.4rem 0.9rem;
+  border: none;
+  border-radius: var(--radius);
+  background: none;
+  color: var(--farbe-hintergrund);
+  font: inherit;
+  cursor: pointer;
+}
+
+.menue-knopf:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.menue-knopf:focus-visible {
+  outline: 3px solid var(--farbe-mint);
+  outline-offset: 2px;
+}
