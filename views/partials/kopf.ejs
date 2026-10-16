@@ -15,7 +15,13 @@
       <a class="logo" href="/">CineRate</a>
       <nav class="navigation" aria-label="Hauptnavigation">
         <% menue.forEach((punkt) => { %>
-          <a href="<%= punkt.pfad %>"<% if (punkt.pfad === aktuellerPfad) { %> class="aktiv"<% } %>><%= punkt.text %></a>
+          <% if (punkt.aktion === "abmelden") { %>
+            <form class="menue-form" method="post" action="/abmelden"> 
+              <button class="menue-knopf" type="submit"><%= punkt.text %></button>
+            </form>
+          <% } else { %>
+            <a href="<%= punkt.pfad %>"<% if (punkt.pfad === aktuellerPfad) { %> class="aktiv"<% } %>><%= punkt.text %></a>
+          <% } %>
         <% }) %>
       </nav>
     </div>
