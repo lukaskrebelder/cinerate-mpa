@@ -1,0 +1,30 @@
+<%- include("partials/kopf") %>
+    <% if (erfolg) { %>
+      <div class="erfolg">
+        <h1>Konto erstellt</h1>
+        <p>Dein Konto wurde angelegt. Du kannst dich jetzt anmelden.</p>
+        <a class="button" href="/anmelden">Zur Anmeldung</a>
+      </div>
+    <% } else { %>
+      <form class="formular" method="post" action="/registrieren" novalidate>
+        <h1>Registrieren</h1>
+        <% if (fehler) { %>
+          <div class="fehler" role="alert"><%= fehler %></div>
+        <% } %>
+
+        <label for="vorname">Vorname</label>
+        <input id="vorname" name="firstName" type="text" autocomplete="given-name" value="<%= werte.firstName || '' %>" required />
+
+        <label for="nachname">Nachname</label>
+        <input id="nachname" name="lastName" type="text" autocomplete="family-name" value="<%= werte.lastName || '' %>" required />
+
+        <label for="email">E-Mail</label>
+        <input id="email" name="email" type="email" autocomplete="email" value="<%= werte.email || '' %>" required />
+
+        <label for="passwort">Passwort (mindestens 8 Zeichen)</label>
+        <input id="passwort" name="password" type="password" autocomplete="new-password" required />
+
+        <button class="button" type="submit">Konto erstellen</button>
+      </form>
+    <% } %>
+<%- include("partials/fuss") %>
