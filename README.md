@@ -34,3 +34,7 @@ Die Heroku-App `cinerate-mpa` braucht die Config Var `BFF_URL`, die auf die URL 
 ## Tech-Stack
 
 Node.js, Express, EJS
+
+## Anmeldung
+
+Registrieren, Anmelden und Abmelden laufen über Formulare (`/registrieren`, `/anmelden`, `/abmelden`). Nach der Anmeldung legt die MPA das Token des Backends in einem Cookie ab (`cinerate_token`: `HttpOnly`, `SameSite=Lax`, auf Heroku zusätzlich `Secure`, gültig 24 Stunden). Der Browser schickt es bei jeder Anfrage mit, die MPA gibt es als `Authorization: Bearer <token>` an das BFF weiter. Die MPA speichert selbst nichts.
