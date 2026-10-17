@@ -2,10 +2,12 @@
 // Die App ist von server.js getrennt, damit die Tests sie ohne festen Port starten können.
 const path = require("path");
 const express = require("express");
-const { erstelleSeitenRouter } = require("./routes/seiten");
 
-// Menüpunkte im Header. Weitere (Anmelden, Registrieren, etc.) kommen mit den jeweiligen Seiten dazu.
-const MENUE = [{ text: "Start", pfad: "/" }];
+const cookieParser = require("cookie-parser");
+const { erstelleSeitenRouter } = require("./routes/seiten");
+const { erstelleAuthRouter } = require("./routes/auth");
+const { holeToken } = require("./lib/sitzung");
+const { bestimmeMenuepunkte } = require("./lib/navigation");
 
 function createApp({ bff }) {
   const app = express();
@@ -17,14 +19,21 @@ function createApp({ bff }) {
   // Stylesheet und weitere Dateien aus public/ werden direkt ausgeliefert
   app.use(express.static(path.join(__dirname, "public")));
 
-  // Diese Werte stehen in allen Vorlagen zur Verfügung (Menü und aktuelle Adresse für die Markierung)
+  // Formulareingaben (POST) lesen und die Cookies der Anfrage verfügbar machen
+  app.use(express.urlencoded({ extended: false }));
+  app.use(cookieParser());
+
+  // Token aus dem Cookie lesen. Diese Werte stehen in allen Vorlagen zur Verfügung
+  // (Menü je nach Anmeldestatus und aktuelle Adresse für die Markierung).
   app.use((req, res, next) => {
-    res.locals.menue = MENUE;
+    req.token = holeToken(req);
+    res.locals.menue = bestimmeMenuepunkte(req.token !== null);
     res.locals.aktuellerPfad = req.path;
     next();
   });
 
   app.use(erstelleSeitenRouter({ bff }));
+  app.use(erstelleAuthRouter({ bff }));
 
   // Keine Route passt: 404-Seite
   app.use((req, res) => {

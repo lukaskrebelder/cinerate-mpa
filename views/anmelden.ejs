@@ -1,0 +1,17 @@
+<%- include("partials/kopf") %>
+    <form class="formular" method="post" action="/anmelden" novalidate>
+      <h1>Anmelden</h1>
+      <% if (fehler) { %>
+        <div class="fehler" role="alert"><%= fehler %></div>
+      <% } %>
+
+      <label for="email">E-Mail</label>
+      <input id="email" name="email" type="email" autocomplete="email" value="<%= email %>" required />
+
+      <label for="passwort">Passwort</label>
+      <input id="passwort" name="password" type="password" autocomplete="current-password" required />
+
+      <button class="button" type="submit">Anmelden</button>
+      <p class="formular-hinweis">Noch kein Konto? <a href="/registrieren">Jetzt registrieren</a></p>
+    </form>
+<%- include("partials/fuss") %>
