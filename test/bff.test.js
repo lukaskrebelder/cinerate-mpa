@@ -1,3 +1,4 @@
+// KI-Log B16: Erstellt mithilfe von KI (Claude Sonnett 5.5)
 // Unit-Tests für die BFF-Aufrufe aus lib/bff.js.
 const test = require("node:test");
 const assert = require("node:assert");

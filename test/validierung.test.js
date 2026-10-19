@@ -1,4 +1,5 @@
-// Gleiche Tests wie in SPA und Backend --> mithilfe von CLAUDE Sonnet 5.5 copy pasted mit kleinen Syntaxänderungen
+// KI-Log B19: Erstellt mithilfe von KI (Claude Sonnett 5.5)
+// Gleiche Tests wie in SPA und Backend --> copy pasted mit kleinen Syntaxänderungen
 // Unit-Tests für die Prüfregeln aus lib/validierung.js (US-2).
 const test = require("node:test");
 const assert = require("node:assert");

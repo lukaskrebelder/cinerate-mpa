@@ -1,3 +1,4 @@
+// KI-Log B15: Erstellt mithilfe von KI (Claude Sonnett 5.5)
 // Tests für Registrierung, Anmeldung und Abmeldung der MPA (US-2).
 // Die App läuft auf einem freien Port, das BFF wird durch ein gefälschtes ersetzt,
 // das jeden Aufruf merkt. So sieht man, was die MPA ans BFF geschickt hat.

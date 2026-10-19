@@ -1,5 +1,6 @@
+// KI-Log B18: Erstellt mithilfe von KI (Claude Sonnett 5.5)
 // Unit-Tests für die Menüpunkte aus lib/navigation.js.
-// --> Ähnlich wie in SPA, daher nahezu copy-paste mithilfe von CLAUDE Sonnet 5.5
+// --> Ähnlich wie in SPA, daher nahezu copy-paste
 const test = require("node:test");
 const assert = require("node:assert");
 const { bestimmeMenuepunkte } = require("../lib/navigation");
