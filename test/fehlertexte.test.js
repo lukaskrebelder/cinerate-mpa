@@ -1,5 +1,6 @@
+// KI-Log B17: Erstellt mithilfe von KI (Claude Sonnett 5.5)
 // Unit-Tests für die Fehlertexte aus lib/fehlertexte.js (US-2).
-// --> Ähnlich aus SPA und Backend --> quasi copy-paste mithilfe von CLAUDE Sonnett 5.5
+// --> Ähnlich aus SPA und Backend --> quasi copy-paste
 const test = require("node:test");
 const assert = require("node:assert");
 const { uebersetzeRegistrierungsfehler, uebersetzeAnmeldefehler } = require("../lib/fehlertexte");

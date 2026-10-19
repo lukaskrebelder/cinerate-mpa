@@ -1,4 +1,4 @@
-//--> Tests aus KI generiert
+// KI-Log B14: Erstellt mithilfe von KI (Claude Sonnett 5.5)
 // Tests für die Seiten der MPA (Startseite, Statusroute, Fehlerseiten).
 // Die App läuft dabei auf einem freien Port, das BFF wird durch ein gefälschtes ersetzt.
 const test = require("node:test");
