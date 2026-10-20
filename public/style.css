@@ -249,3 +249,103 @@ input:focus-visible {
   outline: 3px solid var(--farbe-mint);
   outline-offset: 2px;
 }
+
+/* Hinweise, die keine Fehler sind, z. B. "Deine Sitzung ist abgelaufen" */
+.hinweis {
+  margin: 1rem 0 0;
+  padding: 0.6rem 0.75rem;
+  border-left: 4px solid var(--farbe-akzent);
+  background: var(--farbe-mint);
+  color: var(--farbe-text);
+}
+
+/* Filmsuche */
+.suche {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.suche-feld {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1 1 200px;
+}
+
+.suche-feld label {
+  font-weight: 600;
+}
+
+.suche-feld input,
+.suche-feld select {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--farbe-akzent);
+  border-radius: var(--radius);
+  background: var(--farbe-weiss);
+  font-size: 1rem;
+  color: var(--farbe-text);
+}
+
+.suche-status {
+  min-height: 1.6em;
+  margin: 0.5rem 0;
+}
+
+/* Trefferliste als Raster aus Karten: Poster oben, Titel darunter */
+.film-raster {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.25rem;
+}
+
+.film-karte {
+  background: var(--farbe-weiss);
+  border: 1px solid var(--farbe-mint);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.film-karte img,
+.film-poster-leer {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;      /* Posterformat, damit alle Karten gleich hoch sind */
+  object-fit: cover;
+}
+
+/* Platzhalter, wenn es kein Poster gibt */
+.film-poster-leer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--farbe-mint);
+  font-size: 0.9rem;
+}
+
+.film-titel {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.seiten-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+/* Knopf, der gerade nicht benutzt werden kann (z. B. "Zurück" auf der ersten Seite) */
+.button.deaktiviert {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
