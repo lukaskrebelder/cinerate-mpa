@@ -10,15 +10,22 @@ test("Gäste sehen Start, Anmelden und Registrieren", () => {
   assert.deepStrictEqual(texte, ["Start", "Anmelden", "Registrieren"]);
 });
 
-test("Angemeldete Nutzer sehen Start und Abmelden", () => {
+test("Angemeldete Nutzer sehen Start, Filme und Abmelden", () => {
   const texte = bestimmeMenuepunkte(true).map((punkt) => punkt.text);
-  assert.deepStrictEqual(texte, ["Start", "Abmelden"]);
+  assert.deepStrictEqual(texte, ["Start", "Filme", "Abmelden"]);
+});
+
+test("Filme führt auf die Seite /filme und wird Gästen nicht angezeigt", () => {
+  assert.strictEqual(bestimmeMenuepunkte(true).find((p) => p.text === "Filme").pfad, "/filme");
+  const texteGast = bestimmeMenuepunkte(false).map((punkt) => punkt.text);
+  assert.strictEqual(texteGast.includes("Filme"), false);
 });
 
 test("Abmelden ist eine Aktion, die anderen Punkte sind Links", () => {
   const punkte = bestimmeMenuepunkte(true);
-  assert.strictEqual(punkte[1].aktion, "abmelden");
-  assert.strictEqual(punkte[1].pfad, undefined);
+  const abmelden = punkte.find((p) => p.text === "Abmelden");
+  assert.strictEqual(abmelden.aktion, "abmelden");
+  assert.strictEqual(abmelden.pfad, undefined);
   assert.strictEqual(punkte[0].pfad, "/");
 });
 
