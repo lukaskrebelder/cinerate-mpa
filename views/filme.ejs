@@ -1,0 +1,56 @@
+<%- include("partials/kopf") %>
+    <h1>Filme</h1>
+    <form class="suche" method="get" action="/filme" novalidate>
+      <div class="suche-feld">
+        <label for="titel">Titel</label>
+        <input id="titel" name="query" type="search" autocomplete="off" value="<%= suche.query %>" />
+      </div>
+      <div class="suche-feld">
+        <label for="genre">Genre</label>
+        <select id="genre" name="genre">
+          <option value="">Alle Genres</option>
+          <% genres.forEach((genre) => { %>
+            <option value="<%= genre %>"<% if (genre === suche.genre) { %> selected<% } %>><%= genre %></option>
+          <% }) %>
+        </select>
+      </div>
+      <button class="button" type="submit">Suchen</button>
+    </form>
+
+    <% if (fehler) { %>
+      <div class="fehler" role="alert"><%= fehler %></div>
+    <% } %>
+
+    <% if (ergebnis && ergebnis.movies.length === 0) { %>
+      <p class="suche-status">Keine Filme gefunden.</p>
+    <% } %>
+
+    <% if (ergebnis && ergebnis.movies.length > 0) { %>
+      <ul class="film-raster">
+        <% ergebnis.movies.forEach((film) => { %>
+          <li class="film-karte">
+            <% if (istSichereBildUrl(film.posterUrl)) { %>
+              <img src="<%= film.posterUrl %>" alt="Poster zu <%= film.title %>" loading="lazy" />
+            <% } else { %>
+              <div class="film-poster-leer">Kein Poster</div>
+            <% } %>
+            <p class="film-titel"><%= film.title %></p>
+          </li>
+        <% }) %>
+      </ul>
+
+      <nav class="seiten-navigation" aria-label="Seiten der Trefferliste">
+        <% if (anzeige.hatZurueck) { %>
+          <a class="button" href="<%= zurueckPfad %>">Zurück</a>
+        <% } else { %>
+          <span class="button deaktiviert" aria-disabled="true">Zurück</span>
+        <% } %>
+        <span><%= anzeige.text %></span>
+        <% if (anzeige.hatWeiter) { %>
+          <a class="button" href="<%= weiterPfad %>">Weiter</a>
+        <% } else { %>
+          <span class="button deaktiviert" aria-disabled="true">Weiter</span>
+        <% } %>
+      </nav>
+    <% } %>
+<%- include("partials/fuss") %>
