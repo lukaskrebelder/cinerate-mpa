@@ -1,6 +1,9 @@
 <%- include("partials/kopf") %>
     <form class="formular" method="post" action="/anmelden" novalidate>
       <h1>Anmelden</h1>
+      <% if (hinweis) { %>
+        <div class="hinweis" role="status"><%= hinweis %></div>
+      <% } %>
       <% if (fehler) { %>
         <div class="fehler" role="alert"><%= fehler %></div>
       <% } %>

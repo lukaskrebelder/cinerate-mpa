@@ -7,6 +7,7 @@ const express = require("express");
 const { findeRegistrierungsfehler, findeAnmeldefehler } = require("../lib/validierung");
 const { uebersetzeRegistrierungsfehler, uebersetzeAnmeldefehler } = require("../lib/fehlertexte");
 const { speichereToken, loescheToken } = require("../lib/sitzung");
+const { findeHinweis } = require("../lib/hinweise");
 
 // Aus einem Formularfeld wird immer ein Text (bei fehlenden oder doppelten Feldern ein leerer)
 function text(wert) {
@@ -67,12 +68,13 @@ function erstelleAuthRouter({ bff }) {
 
   // --> Anmeldung
 
-  function zeigeAnmeldung(res, status, { fehler = null, email = "" } = {}) {
-    res.status(status).render("anmelden", { titel: "Anmelden", fehler, email });
+  function zeigeAnmeldung(res, status, { fehler = null, email = "", hinweis = null } = {}) {
+    res.status(status).render("anmelden", { titel: "Anmelden", fehler, email, hinweis });
   }
 
+  // hinweis=abgelaufen oder hinweis=anmeldung: Nach einer Umleitung erklärt ein Hinweis, warum man hier ist
   router.get("/anmelden", nurGaeste, (req, res) => {
-    zeigeAnmeldung(res, 200);
+    zeigeAnmeldung(res, 200, { hinweis: findeHinweis(req.query.hinweis) });
   });
 
   router.post("/anmelden", nurGaeste, async (req, res) => {
