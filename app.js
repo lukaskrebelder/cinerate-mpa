@@ -6,6 +6,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const { erstelleSeitenRouter } = require("./routes/seiten");
 const { erstelleAuthRouter } = require("./routes/auth");
+const { erstelleFilmeRouter } = require("./routes/filme");
 const { holeToken } = require("./lib/sitzung");
 const { bestimmeMenuepunkte } = require("./lib/navigation");
 
@@ -34,6 +35,7 @@ function createApp({ bff }) {
 
   app.use(erstelleSeitenRouter({ bff }));
   app.use(erstelleAuthRouter({ bff }));
+    app.use(erstelleFilmeRouter({ bff }));
 
   // Keine Route passt: 404-Seite
   app.use((req, res) => {
