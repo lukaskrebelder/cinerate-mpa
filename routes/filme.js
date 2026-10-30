@@ -1,4 +1,4 @@
-// Filmsuche der MPA: GET /filme mit Titel, Genre und Seite in der Adresse.
+// Filmsuche der MPA
 // Die Daten kommen über GraphQL vom BFF. 
 // --> Die Seite ist nur für angemeldete Nutzer.
 
@@ -20,6 +20,7 @@ function statusFuerFehler(fehler) {
   return fehler.status > 0 ? fehler.status : 503;
 }
 
+// KI-Log B46: Erstellt mithilfe von KI (Claude Sonnett 5.5) – Router der Filmsuche (erstelleFilmeRouter)
 function erstelleFilmeRouter({ bff }) {
   const router = express.Router();
 
