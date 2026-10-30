@@ -1,7 +1,7 @@
 // Seiten der MPA. Jede Route erzeugt eine fertige HTML-Seite aus einer Vorlage in views/.
 const express = require("express");
 
-// Das BFF wird übergeben, damit die Tests ein eigenes (sozusagen ein gefälschtes) BFF benutzen können.
+// Das BFF wird übergeben, damit die Tests ein eigenes BFF benutzen können.
 function erstelleSeitenRouter({ bff }) {
   const router = express.Router();
 

@@ -1,8 +1,9 @@
-// Registrierung, Anmeldung und Abmeldung (US-2) in der MPA.
+// Registrierung, Anmeldung und Abmeldung in der MPA.
 // Ablauf bei den Formularen: Eingaben prüfen -> an das BFF senden -> Seite mit Ergebnis anzeigen.
 // Nach einer erfolgreichen Anmeldung oder Abmeldung folgt ein Redirect auf die Startseite.
 // So löst ein Neuladen der Seite das Formular nicht noch einmal aus.
-// --> Prinzip ähnlich wie im Backend, daher mithilfe von CLAUDE Sonnet 5.5 geschrieben
+// KI-Log B44: Erstellt mithilfe von KI (Claude Sonnett 5.5) – Routen für Registrierung, Anmeldung und Abmeldung
+// --> Prinzip ähnlich wie im Backend, daher mithilfe von KI geschrieben
 const express = require("express");
 const { findeRegistrierungsfehler, findeAnmeldefehler } = require("../lib/validierung");
 const { uebersetzeRegistrierungsfehler, uebersetzeAnmeldefehler } = require("../lib/fehlertexte");
