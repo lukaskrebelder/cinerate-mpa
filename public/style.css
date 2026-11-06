@@ -349,3 +349,88 @@ input:focus-visible {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* KI-Log B57: Erstellt mithilfe von KI (Claude Sonnett 5.5) – Gestaltung der Filmdetailseite */
+
+/* Die ganze Filmkarte ist ein Link auf die Detailseite */
+.film-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.film-link:hover .film-titel {
+  text-decoration: underline;
+}
+
+/* Seite "Film" (Detailansicht): Poster links, Informationen rechts */
+.zurueck-link {
+  display: inline-block;
+  margin: 0.5rem 0;
+}
+
+.film-detail {
+  display: grid;
+  grid-template-columns: minmax(180px, 300px) 1fr;
+  gap: 2rem;
+  margin: 1rem 0;
+  padding: 1.5rem;
+  background: var(--farbe-weiss);
+  border: 1px solid var(--farbe-mint);
+  border-radius: var(--radius);
+}
+
+.film-detail-poster img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;      /* Posterformat wie bei den Karten */
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.film-detail h1 {
+  margin-top: 0;
+}
+
+.genre-liste {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.genre-liste li {
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  background: var(--farbe-mint);
+  font-size: 0.9rem;
+}
+
+/* Eckdaten als Liste aus Bezeichnung und Wert */
+.film-daten {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem 1rem;
+  margin: 0 0 1.25rem;
+}
+
+.film-daten dt {
+  font-weight: 600;
+}
+
+.film-daten dd {
+  margin: 0;
+}
+
+/* Auf dem Handy stehen Poster und Informationen untereinander */
+@media (max-width: 640px) {
+  .film-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .film-detail-poster {
+    max-width: 260px;
+  }
+}
