@@ -1,0 +1,42 @@
+<%# KI-Log B57: Erstellt mithilfe von KI (Claude Sonnett 5.5) – Ansicht der Filmdetailseite -%>
+<%- include("partials/kopf") %>
+    <p><a class="zurueck-link" href="<%= zurueckPfad %>">← Zurück zur Filmsuche</a></p>
+
+    <% if (fehler) { %>
+      <div class="fehler" role="alert"><%= fehler %></div>
+    <% } %>
+
+    <% if (film) { %>
+      <article class="film-detail">
+        <div class="film-detail-poster">
+          <% if (istSichereBildUrl(film.posterUrl)) { %>
+            <img src="<%= film.posterUrl %>" alt="Poster zu <%= film.title %>" />
+          <% } else { %>
+            <div class="film-poster-leer">Kein Poster</div>
+          <% } %>
+        </div>
+
+        <div>
+          <h1><%= film.title %></h1>
+
+          <% if (Array.isArray(film.genres) && film.genres.length > 0) { %>
+            <ul class="genre-liste" aria-label="Genres">
+              <% film.genres.forEach((genre) => { %>
+                <li><%= genre %></li>
+              <% }) %>
+            </ul>
+          <% } %>
+
+          <dl class="film-daten">
+            <% details.forEach((eintrag) => { %>
+              <dt><%= eintrag.bezeichnung %></dt>
+              <dd><%= eintrag.wert %></dd>
+            <% }) %>
+          </dl>
+
+          <h2>Beschreibung</h2>
+          <p><%= film.description || "Zu diesem Film gibt es keine Beschreibung." %></p>
+        </div>
+      </article>
+    <% } %>
+<%- include("partials/fuss") %>

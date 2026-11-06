@@ -29,12 +29,15 @@
       <ul class="film-raster">
         <% ergebnis.movies.forEach((film) => { %>
           <li class="film-karte">
-            <% if (istSichereBildUrl(film.posterUrl)) { %>
-              <img src="<%= film.posterUrl %>" alt="Poster zu <%= film.title %>" loading="lazy" />
-            <% } else { %>
-              <div class="film-poster-leer">Kein Poster</div>
-            <% } %>
-            <p class="film-titel"><%= film.title %></p>
+            <% const filmPfad = baueFilmPfad(film.movieId); %>
+            <% if (filmPfad) { %><a class="film-link" href="<%= filmPfad %>"><% } %>
+              <% if (istSichereBildUrl(film.posterUrl)) { %>
+                <img src="<%= film.posterUrl %>" alt="Poster zu <%= film.title %>" loading="lazy" />
+              <% } else { %>
+                <div class="film-poster-leer">Kein Poster</div>
+              <% } %>
+              <p class="film-titel"><%= film.title %></p>
+            <% if (filmPfad) { %></a><% } %>
           </li>
         <% }) %>
       </ul>

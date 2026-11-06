@@ -2,7 +2,7 @@
 // Unit-Tests für die GraphQL-Suche aus lib/bff.js (PB-23).
 const test = require("node:test");
 const assert = require("node:assert");
-const { sucheFilme, graphql, statusAusGraphqlFehler, BffFehler } = require("../lib/bff");
+const { sucheFilme, holeFilm, graphql, statusAusGraphqlFehler, BffFehler } = require("../lib/bff");
 
 // Ersetzt fetch für einen Test durch eine eigene Funktion und merkt sich den Aufruf.
 // Nach dem Test wird das echte fetch wiederhergestellt.
@@ -130,6 +130,84 @@ test("graphql liefert die Daten der Antwort", async () => {
     () => antwort(200, { data: { hallo: "welt" } }),
     async () => {
       assert.deepStrictEqual(await graphql("query { hallo }", {}, { token: "abc" }), { hallo: "welt" });
+    }
+  );
+});
+
+
+// KI-Log B58: Erstellt mithilfe von KI (Claude Sonnett 5.5) – Tests für die GraphQL-Abfrage der Filmdetailseite
+//--> holeFilm
+const film = {
+  movieId: 157336,
+  title: "Interstellar",
+  description: "Eine Reise durch ein Wurmloch.",
+  genres: ["Science Fiction", "Drama"],
+  fsk: 12,
+  posterUrl: null,
+  releaseYear: 2014,
+  runtime: 169,
+  avgRating: 4.5,
+};
+
+test("statusAusGraphqlFehler erkennt einen unbekannten Film als 404", () => {
+  assert.strictEqual(statusAusGraphqlFehler("No movie found for this ID."), 404);
+});
+
+test("holeFilm schickt POST an /bff/graphql mit Abfrage, Film-ID und Token", async () => {
+  await mitFetch(
+    () => antwort(200, { data: { film } }),
+    async (aufrufe) => {
+      const ergebnis = await holeFilm(157336, "abc123");
+      assert.strictEqual(aufrufe[0].url, "http://bff.test/bff/graphql");
+      assert.strictEqual(aufrufe[0].optionen.method, "POST");
+      assert.strictEqual(aufrufe[0].optionen.headers.Authorization, "Bearer abc123");
+      const body = JSON.parse(aufrufe[0].optionen.body);
+      assert.ok(body.query.includes("film(movieId: $movieId)"));
+      for (const feld of ["title", "description", "genres", "fsk", "posterUrl", "releaseYear", "runtime", "avgRating"]) {
+        assert.ok(body.query.includes(feld), `Feld ${feld} fehlt in der Abfrage`);
+      }
+      assert.deepStrictEqual(body.variables, { movieId: 157336 });
+      assert.deepStrictEqual(ergebnis, film);
+    }
+  );
+});
+
+test("holeFilm wirft bei einem unbekannten Film einen BffFehler mit Status 404", async () => {
+  await mitFetch(
+    () => antwort(200, { data: null, errors: [{ message: "No movie found for this ID." }] }),
+    async () => {
+      await assert.rejects(holeFilm(1, "abc"), (fehler) => fehler instanceof BffFehler && fehler.status === 404);
+    }
+  );
+});
+
+test("holeFilm wirft bei einer abgelaufenen Sitzung einen BffFehler mit Status 401", async () => {
+  await mitFetch(
+    () => antwort(200, { data: null, errors: [{ message: "Invalid token." }] }),
+    async () => {
+      await assert.rejects(holeFilm(1, "alt"), (fehler) => fehler.status === 401);
+    }
+  );
+});
+
+test("holeFilm wirft bei einer Antwort ohne Film einen BffFehler mit Status 502", async () => {
+  for (const inhalt of [{ data: { film: null } }, { data: { film: { movieId: 1 } } }, { data: null }]) {
+    await mitFetch(
+      () => antwort(200, inhalt),
+      async () => {
+        await assert.rejects(holeFilm(1, "abc"), (fehler) => fehler.status === 502);
+      }
+    );
+  }
+});
+
+test("holeFilm wirft bei Netzwerkfehler einen BffFehler mit Status 0", async () => {
+  await mitFetch(
+    () => {
+      throw new TypeError("fetch failed");
+    },
+    async () => {
+      await assert.rejects(holeFilm(1, "abc"), (fehler) => fehler instanceof BffFehler && fehler.status === 0);
     }
   );
 });
