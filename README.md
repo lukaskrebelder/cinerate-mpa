@@ -42,3 +42,8 @@ Registrieren, Anmelden und Abmelden laufen über Formulare (`/registrieren`, `/a
 ## Filmsuche
 
 Die Seite `/filme` (nur für angemeldete Nutzer) sucht nach Titel und Genre und blättert durch die Treffer. Die MPA holt die Daten per **GraphQL** vom BFF (`POST /bff/graphql`, Abfrage `filme`), die SPA nutzt für dieselbe Suche REST. Ohne Eingaben zeigt die Seite eine Standardliste. Läuft die Sitzung ab, löscht die MPA das Cookie und leitet zur Anmeldung weiter.
+
+
+## Filmdetailseite
+
+Die Seite `/film/{movieId}` (nur für angemeldete Nutzer) zeigt Poster, Titel, Genres, Erscheinungsjahr, Laufzeit, Altersfreigabe, durchschnittliche Bewertung und Beschreibung eines Films. Die MPA holt die Daten per **GraphQL** vom BFF (`POST /bff/graphql`, Abfrage `film`). Die Karten der Filmsuche verlinken auf die Seite, und der Link „Zurück zur Filmsuche“ führt zur selben Suche zurück. Eine ungültige oder unbekannte ID zeigt die Meldung „Diesen Film gibt es nicht.“ (404). Bewerten, Watchlist und Kommentare gibt es in der MPA noch nicht.
