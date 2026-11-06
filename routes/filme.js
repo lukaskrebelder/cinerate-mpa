@@ -6,6 +6,12 @@ const express = require("express");
 const { GENRES } = require("../lib/genres");
 const { loescheToken } = require("../lib/sitzung");
 const {
+  istGueltigeFilmId,
+  bestimmeDetails,
+  baueFilmPfad,
+  uebersetzeDetailfehler,
+} = require("../lib/filmdetail");  
+const {
   leseSeite,
   leseText,
   istSichereBildUrl,
@@ -34,6 +40,7 @@ function erstelleFilmeRouter({ bff }) {
       fehler,
       genres: GENRES,
       istSichereBildUrl,
+      baueFilmPfad: (movieId) => baueFilmPfad(movieId, suche),
       anzeige,
       zurueckPfad: ergebnis ? baueSuchpfad({ ...suche, page: ergebnis.page - 1 }) : null,
       weiterPfad: ergebnis ? baueSuchpfad({ ...suche, page: ergebnis.page + 1 }) : null,
@@ -58,6 +65,45 @@ function erstelleFilmeRouter({ bff }) {
       zeigeFilme(res, statusFuerFehler(err), { suche, fehler: uebersetzeSuchfehler(err.status ?? 0) });
     }
   });
+
+    // KI-Log B57: Erstellt mithilfe von KI (Claude Sonnett 5.5) – Route der Filmdetailseite
+  // Detailseite eines Films, zB. /film/157336. Die Suche wird in der Adresse mitgegeben, damit "Zurück" dorthin führt.
+  router.get("/film/:movieId", async (req, res) => {
+    // Ohne Anmeldung geht es zur Anmeldeseite, dort erklärt ein Hinweis, warum
+    if (req.token === null) return res.redirect(303, "/anmelden?hinweis=anmeldung");
+
+    const suche = { query: leseText(req.query.query), genre: leseText(req.query.genre), page: leseSeite(req.query.page) };
+    res.locals.aktuellerPfad = "/filme";   // Auf der Detailseite bleibt der Menüpunkt Filme markiert
+
+    function zeigeFilm(status, { film = null, fehler = null }) {
+      res.status(status).render("film", {
+        titel: film ? film.title : "Film",
+        film,
+        fehler,
+        details: film ? bestimmeDetails(film) : [],
+        zurueckPfad: baueSuchpfad(suche),
+        istSichereBildUrl,
+      });
+    }
+
+    // Eine ungültige ID (zB. /film/abc) wird gar nicht erst ans BFF geschickt
+    if (!istGueltigeFilmId(req.params.movieId)) {
+      return zeigeFilm(404, { fehler: uebersetzeDetailfehler(404) });
+    }
+
+    try {
+      const film = await bff.holeFilm(Number(req.params.movieId), req.token);
+      zeigeFilm(200, { film });
+    } catch (err) {
+      // Das BFF lehnt das Token ab: Die Sitzung ist abgelaufen. Cookie löschen und neu anmelden lassen.
+      if (err.status === 401) {
+        loescheToken(res);
+        return res.redirect(303, "/anmelden?hinweis=abgelaufen");
+      }
+      zeigeFilm(statusFuerFehler(err), { fehler: uebersetzeDetailfehler(err.status ?? 0) });
+    }
+  });
+
 
   return router;
 }
